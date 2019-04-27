@@ -1,4 +1,5 @@
-data/*
+homework/data/*
+homework/document/*
 */.ipynb_checkpoints/*
 
 *.pyc
