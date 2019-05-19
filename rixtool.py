@@ -7,6 +7,7 @@ logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 logger = logging.getLogger(__name__)
 
 HOMEWORK_PATH = './homework'
+HOMEWORK_FILE_EXTENSION = 'ipynb'
 
 
 def reindex_ipynb():
@@ -16,7 +17,7 @@ def reindex_ipynb():
 
 def find_ipynb():
     assert len(sys.argv) == 2, 'Take just one argument as ipynb file name without file extension.'
-    ipynb_name = sys.argv[1].strip() + '.ipynb'
+    ipynb_name = '.'.join([sys.argv[1].strip(), HOMEWORK_FILE_EXTENSION])
     ipynb_path, target_path = os.path.abspath(HOMEWORK_PATH), None
     try:
         for dir_path, dir_mames, file_names in os.walk(ipynb_path):
@@ -32,13 +33,13 @@ def find_ipynb():
 
 
 def load_ipynb(ipynb_path):
-    logger.info('reading file...'.format(ipynb_path))
+    logger.info('Reading file...'.format(ipynb_path))
     with open(ipynb_path, 'r') as ipynb_file:
         return json.loads(ipynb_file.read())
 
 
 def dump_ipynb(ipynb_path, ipynb_dict):
-    logger.info('writing file...'.format(ipynb_path))
+    logger.info('Writing file...'.format(ipynb_path))
     with open(ipynb_path, 'w') as ipynb_file:
         ipynb_file.write(json.dumps(ipynb_dict, sort_keys=True, indent=2))
 
@@ -46,10 +47,8 @@ def dump_ipynb(ipynb_path, ipynb_dict):
 def index_ipynb(ipynb_dict):
     logger.info('Total {} cells are found.'.format(len(ipynb_dict['cells'])))
     index_count = 0
-    cell_processible = False
     for cell_dict in ipynb_dict['cells']:
-        cell_processible = cell_dict['cell_type'] == 'code' and cell_dict['execution_count'] is not None
-        if cell_processible:
+        if cell_dict['cell_type'] == 'code' and cell_dict['execution_count'] is not None:
             index_count += 1
             cell_dict['execution_count'] = index_count
             for output_dict in cell_dict['outputs']:
