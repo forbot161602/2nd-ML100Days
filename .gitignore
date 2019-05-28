@@ -5,3 +5,6 @@ homework/document/*
 */.ipynb_checkpoints/*
 
 *.pyc
+
+desktop.ini
+
