@@ -34,13 +34,13 @@ def find_ipynb():
 
 def load_ipynb(ipynb_path):
     logger.info('Reading file...'.format(ipynb_path))
-    with open(ipynb_path, 'r') as ipynb_file:
+    with open(ipynb_path, 'r', encoding='UTF-8') as ipynb_file:
         return json.loads(ipynb_file.read())
 
 
 def dump_ipynb(ipynb_path, ipynb_dict):
     logger.info('Writing file...'.format(ipynb_path))
-    with open(ipynb_path, 'w') as ipynb_file:
+    with open(ipynb_path, 'w', encoding='UTF-8') as ipynb_file:
         ipynb_file.write(json.dumps(ipynb_dict, sort_keys=True, indent=2))
 
 
